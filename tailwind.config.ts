@@ -22,6 +22,7 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          hover: "hsl(var(--primary-hover))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -46,6 +47,20 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        // Custom agricultural theme colors
+        weather: {
+          DEFAULT: "hsl(var(--weather-blue))",
+          light: "hsl(var(--weather-light))",
+        },
+        land: {
+          DEFAULT: "hsl(var(--land-green))",
+          light: "hsl(var(--land-light))",
+        },
+        pollution: {
+          warning: "hsl(var(--pollution-warning))",
+          danger: "hsl(var(--pollution-danger))",
+          good: "hsl(var(--pollution-good))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

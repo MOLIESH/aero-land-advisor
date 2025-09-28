@@ -2,39 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Agricultural Dashboard Design System - Earth tones and nature-inspired colors */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Nature-inspired background */
+    --background: 120 20% 98%;
+    --foreground: 120 12% 15%;
 
+    /* Card system with subtle earth tones */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 120 12% 15%;
 
+    /* Popover styling */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 120 12% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary: Rich earth green */
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 98%;
+    --primary-hover: 142 76% 32%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary: Soft sage */
+    --secondary: 120 15% 92%;
+    --secondary-foreground: 120 12% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted: Neutral earth tones */
+    --muted: 120 10% 95%;
+    --muted-foreground: 120 8% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent: Sky blue for weather elements */
+    --accent: 200 90% 55%;
+    --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Weather specific colors */
+    --weather-blue: 200 90% 55%;
+    --weather-light: 200 85% 90%;
+    
+    /* Land recommendation colors */
+    --land-green: 142 76% 36%;
+    --land-light: 142 50% 92%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Pollution alert colors */
+    --pollution-warning: 45 93% 47%;
+    --pollution-danger: 0 84% 60%;
+    --pollution-good: 142 76% 36%;
+
+    /* Destructive states */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Borders and inputs */
+    --border: 120 15% 85%;
+    --input: 120 15% 85%;
+    --ring: 142 76% 36%;
 
     --radius: 0.5rem;
 
@@ -53,6 +74,17 @@ All colors MUST be HSL.
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Beautiful gradients for agricultural theme */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(120 15% 97%) 100%);
+    --gradient-weather: linear-gradient(135deg, hsl(var(--weather-blue)) 0%, hsl(200 85% 70%) 100%);
+    --gradient-land: linear-gradient(135deg, hsl(var(--land-green)) 0%, hsl(142 60% 50%) 100%);
+    
+    /* Shadows with earth tones */
+    --shadow-soft: 0 2px 12px hsl(120 15% 85% / 0.15);
+    --shadow-card: 0 4px 20px hsl(120 15% 85% / 0.12);
+    --shadow-elevated: 0 8px 30px hsl(120 15% 85% / 0.15);
   }
 
   .dark {
@@ -91,6 +123,17 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Beautiful gradients for agricultural theme */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(120 15% 97%) 100%);
+    --gradient-weather: linear-gradient(135deg, hsl(var(--weather-blue)) 0%, hsl(200 85% 70%) 100%);
+    --gradient-land: linear-gradient(135deg, hsl(var(--land-green)) 0%, hsl(142 60% 50%) 100%);
+    
+    /* Shadows with earth tones */
+    --shadow-soft: 0 2px 12px hsl(120 15% 85% / 0.15);
+    --shadow-card: 0 4px 20px hsl(120 15% 85% / 0.12);
+    --shadow-elevated: 0 8px 30px hsl(120 15% 85% / 0.15);
   }
 }
 
@@ -101,5 +144,37 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Custom gradient utilities */
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
+  }
+  
+  .bg-gradient-card {
+    background: var(--gradient-card);
+  }
+  
+  .bg-gradient-weather {
+    background: var(--gradient-weather);
+  }
+  
+  .bg-gradient-land {
+    background: var(--gradient-land);
+  }
+  
+  /* Shadow utilities */
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  
+  .shadow-elevated {
+    box-shadow: var(--shadow-elevated);
   }
 }
