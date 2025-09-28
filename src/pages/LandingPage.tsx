@@ -45,8 +45,8 @@ const LandingPage = () => {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center text-white">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Smart Agriculture
-              <span className="block">Weather Intelligence</span>
+              AEROWISE
+              <span className="block">Smart Agriculture Intelligence</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-90">
               Make informed farming decisions with real-time weather insights, land recommendations, and pollution monitoring.
@@ -58,8 +58,8 @@ const LandingPage = () => {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </NavLink>
               </Button>
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-primary">
-                Learn More
+              <Button asChild size="lg" className="bg-green-600 text-white hover:bg-green-700 font-semibold">
+                <NavLink to="/about">Learn More</NavLink>
               </Button>
             </div>
           </div>
@@ -74,7 +74,7 @@ const LandingPage = () => {
               Comprehensive Agricultural Intelligence
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Our platform combines weather data, environmental monitoring, and AI-powered insights to help you optimize your agricultural operations.
+              AEROWISE combines weather data, environmental monitoring, and AI-powered insights to help you optimize your agricultural operations.
             </p>
           </div>
 

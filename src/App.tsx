@@ -9,6 +9,8 @@ import WeatherPage from "./pages/WeatherPage";
 import LandRecommendationsPage from "./pages/LandRecommendationsPage";
 import PollutionAlertsPage from "./pages/PollutionAlertsPage";
 import NotFound from "./pages/NotFound";
+import LandAreasPage from "./pages/LandAreasPage";
+import AboutPage from "./pages/AboutPage";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +25,8 @@ const App = () => (
             <Route path="/" element={<LandingPage />} />
             <Route path="/weather" element={<WeatherPage />} />
             <Route path="/land" element={<LandRecommendationsPage />} />
+            <Route path="/areas" element={<LandAreasPage />} />
+            <Route path="/about" element={<AboutPage />} />
             <Route path="/pollution" element={<PollutionAlertsPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

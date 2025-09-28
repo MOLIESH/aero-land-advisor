@@ -10,6 +10,7 @@ const Header = () => {
     { name: "Home", path: "/" },
     { name: "Weather", path: "/weather" },
     { name: "Land Recommendations", path: "/land" },
+    { name: "Land Areas", path: "/areas" },
     { name: "Pollution Alerts", path: "/pollution" },
   ];
 
@@ -22,7 +23,7 @@ const Header = () => {
             <div className="bg-gradient-hero p-2 rounded-lg">
               <Leaf className="h-6 w-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-foreground">AgriWeather</span>
+            <span className="text-xl font-bold text-foreground">AEROWISE</span>
           </NavLink>
 
           {/* Desktop Navigation */}

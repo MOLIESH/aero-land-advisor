@@ -1,8 +1,34 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { toast } from "@/hooks/use-toast";
 import { AlertTriangle, Wind, Factory, Car, Leaf, Bell, TrendingDown, TrendingUp } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from "recharts";
+
+const AlertForm = () => {
+  const [threshold, setThreshold] = useState("100");
+  const [email, setEmail] = useState("");
+  return (
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <div className="text-sm font-medium">AQI Threshold</div>
+        <Input value={threshold} onChange={(e) => setThreshold(e.target.value)} placeholder="e.g. 100" />
+      </div>
+      <div className="space-y-2">
+        <div className="text-sm font-medium">Email (optional)</div>
+        <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@example.com" />
+      </div>
+      <div className="flex justify-end">
+        <Button onClick={() => {
+          toast({ title: "Alert set", description: `We'll notify you when AQI > ${threshold}.` });
+        }}>Save Alert</Button>
+      </div>
+    </div>
+  );
+};
 
 const PollutionAlertsPage = () => {
   const currentAQI = {
@@ -102,17 +128,17 @@ const PollutionAlertsPage = () => {
             <CardDescription>Real-time air quality assessment for your location</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-6 w-full lg:w-auto">
                 <div className="text-center">
                   <div className="text-4xl font-bold text-foreground mb-1">{currentAQI.value}</div>
                   <div className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${currentAQI.color} ${currentAQI.bgColor} ${currentAQI.borderColor}`}>
                     {currentAQI.level}
                   </div>
                 </div>
-                <div className="flex-1 max-w-md">
-                  <p className="text-sm text-muted-foreground">{currentAQI.description}</p>
-                  <div className="mt-3 w-full bg-gray-200 rounded-full h-2">
+                <div className="flex-1 max-w-md w-full">
+                  <p className="text-sm text-muted-foreground mb-3">{currentAQI.description}</p>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
                     <div 
                       className="bg-yellow-500 h-2 rounded-full transition-all duration-300" 
                       style={{ width: `${(currentAQI.value / 150) * 100}%` }}
@@ -126,15 +152,26 @@ const PollutionAlertsPage = () => {
                   </div>
                 </div>
               </div>
-              <Button variant="outline">
-                <Bell className="h-4 w-4 mr-2" />
-                Set Alert
-              </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="w-full sm:w-auto">
+                    <Bell className="h-4 w-4 mr-2" />
+                    Set Alert
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Set AQI Alert</DialogTitle>
+                    <DialogDescription>Get notified when AQI exceeds a threshold.</DialogDescription>
+                  </DialogHeader>
+                  <AlertForm />
+                </DialogContent>
+              </Dialog>
             </div>
           </CardContent>
         </Card>
 
-        <div className="grid lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           {/* Pollutant Levels */}
           <div className="lg:col-span-2">
             <Card className="shadow-card">
@@ -143,7 +180,7 @@ const PollutionAlertsPage = () => {
                 <CardDescription>Individual pollutant concentrations and trends</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {pollutants.map((pollutant, index) => (
                     <div key={index} className="p-4 rounded-lg border bg-card">
                       <div className="flex items-center justify-between mb-2">
@@ -204,7 +241,7 @@ const PollutionAlertsPage = () => {
           </Card>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* AQI Trend */}
           <Card className="shadow-card">
             <CardHeader>
@@ -244,14 +281,14 @@ const PollutionAlertsPage = () => {
                   <div key={alert.id} className="p-3 rounded-lg border bg-card">
                     <div className="flex items-start space-x-3">
                       {getAlertIcon(alert.type)}
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         <div className="font-medium text-sm mb-1">{alert.title}</div>
-                        <p className="text-xs text-muted-foreground mb-2">{alert.message}</p>
+                        <p className="text-xs text-muted-foreground mb-2 break-words">{alert.message}</p>
                         <div className="flex items-center justify-between">
                           <span className="text-xs text-muted-foreground">{alert.timestamp}</span>
                           <Badge 
                             variant={alert.severity === "high" ? "destructive" : alert.severity === "medium" ? "default" : "secondary"}
-                            className="text-xs"
+                            className="text-xs flex-shrink-0"
                           >
                             {alert.severity}
                           </Badge>
@@ -272,7 +309,7 @@ const PollutionAlertsPage = () => {
             <CardDescription>How current air quality affects farming and crop health</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
               <div className="text-center p-4 rounded-lg bg-green-50 border border-green-200">
                 <Leaf className="h-8 w-8 mx-auto mb-2 text-green-600" />
                 <div className="font-medium text-green-800">Crop Health</div>
@@ -285,7 +322,7 @@ const PollutionAlertsPage = () => {
                 <div className="text-2xl font-bold text-yellow-600 mb-1">Moderate</div>
                 <p className="text-xs text-yellow-700">Some stagnation may affect plant respiration</p>
               </div>
-              <div className="text-center p-4 rounded-lg bg-blue-50 border border-blue-200">
+              <div className="text-center p-4 rounded-lg bg-blue-50 border border-blue-200 sm:col-span-2 lg:col-span-1">
                 <Factory className="h-8 w-8 mx-auto mb-2 text-blue-600" />
                 <div className="font-medium text-blue-800">Pollutant Exposure</div>
                 <div className="text-2xl font-bold text-blue-600 mb-1">Low</div>
