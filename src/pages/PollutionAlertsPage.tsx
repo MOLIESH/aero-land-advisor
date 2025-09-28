@@ -1,18 +1,23 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle, Wind, Factory, Car, Leaf, Bell, TrendingDown, TrendingUp } from "lucide-react";
+import { AlertTriangle, Wind, Factory, Car, Leaf, Bell, TrendingDown, TrendingUp, RefreshCw } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from "recharts";
+import { usePollutionData } from "@/hooks/usePollutionData";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 const PollutionAlertsPage = () => {
-  const currentAQI = {
-    value: 65,
-    level: "Moderate",
-    color: "text-yellow-600",
-    bgColor: "bg-yellow-50",
-    borderColor: "border-yellow-200",
-    description: "Air quality is acceptable; however, there may be a concern for sensitive individuals."
-  };
+  const { 
+    currentAQI, 
+    pollutants, 
+    alerts, 
+    historicalData, 
+    isLoading, 
+    refreshPollutionData,
+    markAlertAsRead,
+    dismissAlert,
+    getUnreadAlertsCount
+  } = usePollutionData();
 
   const pollutants = [
     { name: "PM2.5", value: 35, unit: "μg/m³", status: "Moderate", trend: "stable" },
@@ -90,49 +95,74 @@ const PollutionAlertsPage = () => {
     <div className="min-h-screen py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">Pollution Alerts</h1>
-          <p className="text-lg text-muted-foreground">Real-time air quality monitoring and environmental alerts</p>
+        <div className="mb-8 flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">Pollution Alerts</h1>
+            <p className="text-lg text-muted-foreground">Real-time air quality monitoring and environmental alerts</p>
+          </div>
+          <div className="flex gap-2">
+            <Button variant="outline" className="relative">
+              <Bell className="h-4 w-4 mr-2" />
+              Alerts
+              {getUnreadAlertsCount() > 0 && (
+                <Badge variant="destructive" className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center text-xs">
+                  {getUnreadAlertsCount()}
+                </Badge>
+              )}
+            </Button>
+            <Button onClick={refreshPollutionData} disabled={isLoading} variant="outline">
+              <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+              Refresh
+            </Button>
+          </div>
         </div>
 
-        {/* Current AQI */}
-        <Card className="shadow-card mb-8">
-          <CardHeader>
-            <CardTitle>Current Air Quality Index (AQI)</CardTitle>
-            <CardDescription>Real-time air quality assessment for your location</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-foreground mb-1">{currentAQI.value}</div>
-                  <div className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${currentAQI.color} ${currentAQI.bgColor} ${currentAQI.borderColor}`}>
-                    {currentAQI.level}
+        {isLoading ? (
+          <div className="flex items-center justify-center py-20">
+            <LoadingSpinner size="lg" />
+          </div>
+        ) : (
+          <>
+            {/* Current AQI */}
+            <Card className="shadow-card mb-8">
+              <CardHeader>
+                <CardTitle>Current Air Quality Index (AQI)</CardTitle>
+                <CardDescription>Real-time air quality assessment for your location</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <div className="text-center">
+                      <div className="text-4xl font-bold text-foreground mb-1">{currentAQI.aqi}</div>
+                      <div className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${currentAQI.color} ${currentAQI.bgColor} ${currentAQI.borderColor}`}>
+                        {currentAQI.level}
+                      </div>
+                    </div>
+                    <div className="flex-1 max-w-md">
+                      <p className="text-sm text-muted-foreground">{currentAQI.description}</p>
+                      <div className="mt-3 w-full bg-gray-200 rounded-full h-2">
+                        <div 
+                          className="bg-yellow-500 h-2 rounded-full transition-all duration-300" 
+                          style={{ width: `${(currentAQI.aqi / 150) * 100}%` }}
+                        />
+                      </div>
+                      <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                        <span>0</span>
+                        <span>50</span>
+                        <span>100</span>
+                        <span>150+</span>
+                      </div>
+                    </div>
                   </div>
+                  <Button variant="outline">
+                    <Bell className="h-4 w-4 mr-2" />
+                    Set Alert
+                  </Button>
                 </div>
-                <div className="flex-1 max-w-md">
-                  <p className="text-sm text-muted-foreground">{currentAQI.description}</p>
-                  <div className="mt-3 w-full bg-gray-200 rounded-full h-2">
-                    <div 
-                      className="bg-yellow-500 h-2 rounded-full transition-all duration-300" 
-                      style={{ width: `${(currentAQI.value / 150) * 100}%` }}
-                    />
-                  </div>
-                  <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                    <span>0</span>
-                    <span>50</span>
-                    <span>100</span>
-                    <span>150+</span>
-                  </div>
-                </div>
-              </div>
-              <Button variant="outline">
-                <Bell className="h-4 w-4 mr-2" />
-                Set Alert
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+          </>
+        )}
 
         <div className="grid lg:grid-cols-3 gap-6 mb-8">
           {/* Pollutant Levels */}
